@@ -6,7 +6,7 @@
 /*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:31:11 by aaammari          #+#    #+#             */
-/*   Updated: 2023/02/25 18:59:30 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/06 18:53:40 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,35 @@ int	print_error(char *str)
 	return (0);
 }
 
+int	is_option(char *line)
+{
+	int	i;
+	int	size;
+
+	size = ft_strlen(line);
+	if (line[0] == '-' && size <= 3)
+		return (1);
+	return (0);
+}
+
+int	there_is_a_redirection(char *str)
+{
+	int	db;
+	int	s;
+	int	i;
+
+	i = 0;
+	db = 0;
+	s = 0;
+	while (str[i])
+	{
+		quotes_counter(str[i], &db, &s);
+		if ((str[i] == '>' || str[i] == '<') && (!(db % 2) && !(s % 2)))
+			return (1);
+        i++;
+	}
+	return (0);
+}
 /*int	nbr_of_char(char *str, char c, int n, int ds)
 {
 	int	i;

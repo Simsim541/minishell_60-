@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_redirect.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/06 13:39:40 by mberri            #+#    #+#             */
+/*   Updated: 2023/03/06 13:39:44 by mberri           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
-static void quotes_check(char c, int *db, int *s)
+static void	quotes_check(char c, int *db, int *s)
 {
 	if (c == '"')
 		(*db)++;
@@ -9,17 +20,18 @@ static void quotes_check(char c, int *db, int *s)
 		(*s)++;
 }
 
-static int error_redirection(char *str, int i, int red)
+static int	error_redirection(char *str, int i, int red)
 {
-	int y;
+	int	y;
 	int	stop;
 
 	if (red == 2)
 		i -= 1;
-	else if (str[i-red] == '<' && str[i-(red- 1)] == '<' && str[i-(red-2)] == '<')
-		i-=red-3;
+	else if (str[i - red] == '<'
+		&& str[i - (red - 1)] == '<' && str[i - (red - 2)] == '<')
+	i -= red - 3;
 	else
-		i-=red-2;
+		i -= red - 2;
 	stop = 2;
 	ft_putstr_fd("syntax error near unexpected token `", 2);
 	if (str[i] == '>' || str[i] == '<')
@@ -32,10 +44,10 @@ static int error_redirection(char *str, int i, int red)
 	return (0);
 }
 
-static int check_deplicate_of_redirection(char *line)
+static int	check_deplicate_of_redirection(char *line)
 {
-	int i;
-	int redirection;
+	int	i;
+	int	redirection;
 	int	db;
 	int	s;
 
@@ -53,15 +65,13 @@ static int check_deplicate_of_redirection(char *line)
 		}
 		if (redirection == 2 && (line[i - 2] == '>' && line[i - 1] == '<'))
 			return (error_redirection(line, i, redirection));
-		else if (redirection == 3 && (line[i - 3] != '<' && line[i - 2] != '<' && line[i - 1] != '<'))
-			return (error_redirection(line, i, redirection));
 		else if (redirection > 2)
-			return(error_redirection(line, i, redirection));
+			return (error_redirection(line, i, redirection));
 	}
 	return (1);
 }
 
-int check_redirect(char *line)
+int	check_redirect(char *line)
 {
 	if (!(check_deplicate_of_redirection(line)))
 		return (0);

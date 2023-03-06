@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+         #
+#    By: mberri <mberri@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/07 18:45:14 by aaammari          #+#    #+#              #
-#    Updated: 2023/03/04 00:26:10 by simoberri        ###   ########.fr        #
+#    Updated: 2023/03/06 18:35:23 by mberri           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,6 @@ SRC =	minishell.c 		\
 		redir_append.c		\
 		utils_dollar_qts.c	\
 		expand_utils.c		\
-		ft_exec.c			\
-		ft_exec_pipe.c		\
 		utils.c				\
 		check_pipes.c		\
 		check_redirect.c	\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_append.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 18:40:30 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/04 00:28:45 by simoberri        ###   ########.fr       */
+/*   Updated: 2023/03/06 12:35:55 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 static void	counter_quotes(char c, int *db, int *s)
 {
 	if (c == '"')
-		db++;
+		(*db)++;
 	if (c =='\'')
-		s++;
+		(*s)++;
 }
 
 int	check_append_in(char *str)
@@ -40,8 +40,9 @@ int	check_append_in(char *str)
 				i++;
 			if (str[i] == '\0')
 				return (i);
-			if (str[i - 1] == ' ' && (str[i] == '\0' || str[i] == '<' || str[i] == '>'
-				|| str[i] == '|' || str[i] == ';' || str[i] == '&'))
+			if (str[i - 1] == ' '
+				&& (str[i] == '\0' || str[i] == '<' || str[i] == '>'
+					|| str[i] == '|' || str[i] == ';' || str[i] == '&'))
 				return (i);
 		}
 	}
@@ -71,7 +72,7 @@ int	check_append_out(char *str)
 				return (i);
 			if (str[i - 1] == ' '
 				&& (str[i] == '\0' || str[i] == '<' || str[i] == '>'
-				|| str[i] == '|' || str[i] == ';' || str[i] == '&'))
+					|| str[i] == '|' || str[i] == ';' || str[i] == '&'))
 				return (i);
 		}
 	}

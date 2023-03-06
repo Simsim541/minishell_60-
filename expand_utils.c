@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaammari <aaammari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:00:09 by aaammari          #+#    #+#             */
-/*   Updated: 2023/02/18 18:26:33 by aaammari         ###   ########.fr       */
+/*   Updated: 2023/03/06 18:30:10 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	fillcmd_and_incj(char *cmdline, int *j, int *l, int *i)
 		*j += *l;
 }
 
-int	check_digit(char *str, char *cmdline)
+/*int	check_digit(char *str, char *cmdline)
 {
 	int	i;
 
@@ -46,4 +46,4 @@ int	check_digit(char *str, char *cmdline)
 		}
 	}
 	return (i);
-}
+}*/

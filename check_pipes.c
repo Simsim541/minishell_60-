@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_pipes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 18:37:14 by mberri            #+#    #+#             */
-/*   Updated: 2023/03/05 20:36:56 by simoberri        ###   ########.fr       */
+/*   Updated: 2023/03/06 12:27:19 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,17 @@
 /*else if (line[i] == '|' && j > 0 && (!(db % 2) || !(s % 2))
 			&& line[i + 1] == '\0')
 			command++;*/
-static int check_pipe_in_begin(char *line)
+static void	quotes_counter(char c, int *db, int *s)
 {
-	int i;
+	if (c == '"')
+		(*db)++;
+	if (c == '\'')
+		(*s)++;
+}
+
+static int	check_pipe_in_begin(char *line)
+{
+	int	i;
 
 	i = 0;
 	while (line[i])
@@ -32,20 +40,13 @@ static int check_pipe_in_begin(char *line)
 	return (0);
 }
 
-static void quotes_counter(char c, int *db, int *s)
-{
-	if (c == '"')
-		(*db)++;
-	if (c == '\'')
-		(*s)++;
-}
 
-int number_of_pipes(char *line)
+int	number_of_pipes(char *line)
 {
-	int i;
-	int db;
-	int s;
-	int pipe;
+	int	i;
+	int	db;
+	int	s;
+	int	pipe;
 
 	pipe = 0;
 	i = 0;
@@ -61,13 +62,19 @@ int number_of_pipes(char *line)
 	return (pipe);
 }
 
-int check_pipes(char *line)
+static	void	is_command(int	*command, int *j)
 {
-	int i;
-	int command;
-	int db;
-	int s;
-	int j;
+	(*command)++;
+	(*j) = 0;
+}
+
+int	check_pipes(char *line)
+{
+	int	i;
+	int	command;
+	int	db;
+	int	s;
+	int	j;
 
 	init_var(&command, &db, &s, &j);
 	if (!check_pipe_in_begin(line))
@@ -82,11 +89,10 @@ int check_pipes(char *line)
 			quotes_counter(line[i], &db, &s);
 		}
 		if (line[i] == '|' && j > 0 && (!(db % 2) || !(s % 2)))
-		{
-			command++;
-			j = 0;
-		}
+			is_command(&command, &j);
 		else if (line[i + 1] == '\0' && j > 0 && (!(db % 2) || !(s % 2)))
+			command++;
+		else if (line[i] == '\0' && j > 0 && (!(db % 2) && !(s % 2)))
 			command++;
 	}
 	if (command <= number_of_pipes(line) && command != 0)

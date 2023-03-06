@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 13:51:57 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/04 00:28:21 by simoberri        ###   ########.fr       */
+/*   Updated: 2023/03/06 12:35:23 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void counter_quotes(char c, int *db, int *s)
+static void	counter_quotes(char c, int *db, int *s)
 {
 	if (c == '"')
-		db++;
+		(*db)++;
 	if (c == '\'')
-		s++;
+		(*s)++;
 }
 
 // check if there is a file name after the < symbol
-int check_int(char *str)
+int	check_int(char *str)
 {
-	int i;
-	int db;
-	int s;
+	int	i;
+	int	db;
+	int	s;
 
 	i = -1;
 	db = 0;
@@ -40,7 +40,9 @@ int check_int(char *str)
 				i++;
 			if (str[i] == '\0')
 				return (i);
-			if (str[i - 1] == ' ' && (str[i] == '\0' || str[i] == '<' || str[i] == '>' || str[i] == '|' || str[i] == ';' || str[i] == '&'))
+			if (str[i - 1] == ' '
+				&& (str[i] == '\0' || str[i] == '<' || str[i] == '>'
+					|| str[i] == '|' || str[i] == ';' || str[i] == '&'))
 				return (i);
 		}
 	}
@@ -49,11 +51,11 @@ int check_int(char *str)
 
 // check if there is a file name after the > symbol
 
-int check_out(char *str)
+int	check_out(char *str)
 {
-	int i;
-	int db;
-	int s;
+	int	i;
+	int	db;
+	int	s;
 
 	i = -1;
 	db = 0;
@@ -68,7 +70,9 @@ int check_out(char *str)
 				i++;
 			if (str[i] == '\0')
 				return (i);
-			if (str[i - 1] == ' ' && (str[i] == '\0' || str[i] == '<' || str[i] == '>' || str[i] == '|' || str[i] == ';' || str[i] == '&'))
+			if (str[i - 1] == ' '
+				&& (str[i] == '\0' || str[i] == '<' || str[i] == '>'
+					|| str[i] == '|' || str[i] == ';' || str[i] == '&'))
 				return (i);
 		}
 	}
@@ -79,7 +83,7 @@ int check_out(char *str)
 
 int	check_in_out(char *str)
 {
-	int check;
+	int	check;
 
 	check = 0;
 	if (check_int(str) != 0)
