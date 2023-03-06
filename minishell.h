@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 14:39:35 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/06 19:09:40 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/06 22:56:29 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,18 @@ typedef struct s_cmd
 
 typedef struct s_redirection
 {
-	int				is_output_red;
-	int				is_two_output_red;
-	int				is_input_red;
-	int				is_two_input_red;
-	t_redirection	*next;
+    int						index;
+    t_redirection_type		type;
+    char					*file_name;
+    struct s_redirection	*next;
 }t_redirection;
 
-/*typedef struct s_redirection
-{
-    int                        index;
-    t_redirection_type        type;
-    char                    *file_name;
-    struct s_redirection    *next;
-}t_redirection;
 typedef enum e_redirection_type{
-    RE_GREAT,
-    RE_DOUBLE_GREAT,
-    RE_LESS,
-}            t_redirection_type;*/
+    RED_OUT,
+    RED_DOUBLE_OUT,
+    RED_INP,
+	RED_DOUBLE_INP,
+}            t_redirection_type;
 
 int		there_is_a_redirection(char *str);
 int		is_option(char *line);

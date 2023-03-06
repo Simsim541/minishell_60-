@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 09:57:56 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/06 18:54:10 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/06 23:24:45 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ t_cmd	*init_cmd(void)
 	new_mem->option = NULL;
 	new_mem->next = NULL;
 	new_mem->redirect = malloc(sizeof(t_redirection));
-	new_mem->redirect->is_output_red = 0;
-	new_mem->redirect->is_two_output_red = 0;
-	new_mem->redirect->is_input_red = 0;
-	new_mem->redirect->is_two_input_red = 0;
+	new_mem->redirect->index = 0;
+	new_mem->redirect->file_name = NULL;
+	new_mem->redirect->next = NULL;
+	new_mem->redirect->type = NULL;
 	new_mem->redirect->next = NULL;
 	return (new_mem);
 }
@@ -45,7 +45,7 @@ static int	white_space(char *str)
 }
 /*
 echo -n "hello"
-ls -al>>A >>B>> C>>D
+    ls -al>>A >>B>> C>>D
 ls >> Z>> X -al>> E
 */
 

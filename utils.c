@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:31:11 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/06 18:53:40 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/06 23:26:33 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	counter_quotes(char c, int *db, int *s)
+{
+	if (c == '"')
+		(*db)++;
+	if (c == '\'')
+		(*s)++;
+}
 
 int	is_white_space(char c)
 {
