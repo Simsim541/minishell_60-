@@ -46,34 +46,32 @@ void	normal_parsing(t_cmd *cmd, char *line)
 }
 
 
-void	fill_redirection(t_cmd *cmd, char *line, int i)
+void	fill_redirection(t_cmd *cmd, char *line, int *i)
 {
 	int	start;
+	int	j;
 
+	j = 0;
 	start = 0;
-	if (line[i] == '>' && line[i + 1] == '>')
+	if (line[*i] == '>' && line[(*i) + 1] == '>')
 		cmd->redirect->type = RED_DOUBLE_OUT;
-	else if (line == '<' && line[i + 1] == '<')
+	else if (line[*i] == '<' && line[(*i) + 1] == '<')
 		cmd->redirect->type = RED_DOUBLE_INP;
-	else if(line[i] == '<' && line[i + 1] == '>')
+	else if(line[*i] == '<' && line[(i*) + 1] == '>')
 		cmd->redirect->type = RED_INP;
-	else if (line[i] == '>' && (line[i + 1] != '>' && line[i + 1] != '<'))
+	else if (line[*i] == '>' && (line[(*i) + 1] != '>' && line[(*i) + 1] != '<'))
 		cmd->redirect->type = RED_OUT;
-	else if (line[i] == '<' && (line[i + 1] != '>' && line[i + 1] != '<'))
+	else if (line[*i] == '<' && (line[(*i) + 1] != '>' && line[(*i) + 1] != '<'))
 		cmd->redirect->type = RED_INP;
-	while (line[i] == '>' || line[i] == '<')
-		i++;
-	while (is_white_space(line[i]))
-		i++;
-	start = i;
-	while (!(is_white_space(line[i])))
-		i++;
-	cmd->redirect->filename = ft_substr()
-	
-	
-		
-	
-				
+	while (line[*i] == '>' || line[*i] == '<')
+		(*i)++;
+	while (is_white_space(line[*i]))
+		(*i)++;
+	start = *i;
+	while (line[*i] && !(is_white_space(line[*i])))
+		(*i)++;
+	cmd->redirect->filename = ft_substr(line, start, (*i) - start);
+	cmd->redirect = cmd->redirect->next;
 }
 
 void	parsing_with_redirection(t_cmd *cmd, char *line)
@@ -107,7 +105,8 @@ void	parsing_with_redirection(t_cmd *cmd, char *line)
 			i++;
 		if (line[i] == '>' || line[i] == '<'
 			&& (!(db % 2) && !(s % 2)))
-			
+			fill_redirection(cmd, line, &i);
+		if()
 	}
 	
 }
