@@ -6,7 +6,7 @@
 #    By: mberri <mberri@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/07 18:45:14 by aaammari          #+#    #+#              #
-#    Updated: 2023/03/06 18:35:23 by mberri           ###   ########.fr        #
+#    Updated: 2023/03/07 15:06:28 by mberri           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC =	minishell.c 		\
 		utils.c				\
 		check_pipes.c		\
 		check_redirect.c	\
+		parse.c				\
 		
 OBJ = $(SRC:.c=.o)
 

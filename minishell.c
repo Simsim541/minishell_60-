@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 09:57:56 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/06 23:24:45 by simoberri        ###   ########.fr       */
+/*   Updated: 2023/03/07 16:52:00 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,18 @@ t_cmd	*init_cmd(void)
 	new_mem->argument = NULL;
 	new_mem->option = NULL;
 	new_mem->next = NULL;
-	new_mem->redirect = malloc(sizeof(t_redirection));
-	new_mem->redirect->index = 0;
-	new_mem->redirect->file_name = NULL;
-	new_mem->redirect->next = NULL;
-	new_mem->redirect->type = NULL;
-	new_mem->redirect->next = NULL;
+	new_mem->redirect = init_redirecttion();
+	return (new_mem);
+}
+
+t_redirection	*init_redirecttion(void)
+{
+	t_redirection	*new_mem;
+
+	new_mem = malloc(sizeof(t_redirection));
+	new_mem->index = 0;
+	new_mem->file_name = NULL;
+	new_mem->next = NULL;
 	return (new_mem);
 }
 
@@ -65,8 +71,10 @@ int	main(int ac, char **av, char **env)
 	char	*line;
 	char	**args;
 	t_cmd	*command;
+	int		i;
 
-	command = init_cmd();
+	i = 0;
+	//command = init_cmd();
 	(void)ac;
 	(void)av;
 	(void)env;
@@ -78,17 +86,30 @@ int	main(int ac, char **av, char **env)
 		add_history(line);
 		if (line && !(white_space(line)) && check_syntax_init(line))
 		{
-			printf("ok\n");	
-			line = expand_env(line, env);
-			printf("Line is : %s\n", line);
+			args = ft_split(line, '|');
+			command = init_command(args);
+			printf("OKAY   here before while loop is Okay\n");
+			while (command)
+			{
+				printf("command is :%s\n", command->cmd);
+				while (command->argument[i])
+				{
+					printf("argument is : %s\n", command->argument[i]);
+					i++;
+				}
+				if (command->option)
+					printf("option is : %s\n", command->option);
+				if (command->redirect)
+				{
+					while (command->redirect)
+					{
+						printf("file_name is : %s\n", command->redirect->file_name);
+						printf("type is %d\n", command->redirect->type);
+					}
+				}
+				command = command->next;
+			}
 		}
 	}
-	args = ft_split(line, '|');
-	init_command(command, args);
-	/*while (args[i])
-	{
-		printf("args : %s\n", args[i]);
-		i++;
-	}*/
 	return (0);
 }
