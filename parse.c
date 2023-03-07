@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:59:49 by mberri            #+#    #+#             */
-/*   Updated: 2023/03/07 16:56:43 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/08 00:46:53 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,33 +25,49 @@ void	normal_parsing(t_cmd *cmd, char *line)
 	char	**command;
 	int		i;
 	int		j;
-
+	int		k;
+	
 	i = 0;
 	j = 0;
+	k = 0;
 	command = ft_split(line, ' ');
-	cmd->cmd = command[i];
+	while(command[++j])
+	{
+		if(!is_option(command[j]))
+			k++;
+	}
+	j = 0;
+	if (k > 0)
+		cmd->argument = malloc(sizeof(char *) * k + 1);
+	cmd->cmd = ft_strdup(command[i]);
 	i++;
 	while (command[i])
 	{
+		printf("(insid LOOP) command is  %s\n", cmd->cmd);
 		if (is_option(command[i]))
 		{
 			cmd->option = ft_strjoin(cmd->option, command[i]);
-			printf("option is %s\n", cmd->option);
+			printf("(inside LOOP) option is %s\n", cmd->option);
 		}
-		else
+		else if (k > 0)
 		{
 			cmd->argument[j] = ft_strdup(command[i]);
+			printf("(inside LOOP) argument is : %s\n", cmd->argument[j]);
 			j++;
 		}
 		i++;
 	}
+	//cmd->argument[j] = '\0';
 	j = 0;
 	printf("command is %s\n", cmd->cmd);
 	printf("option is %s\n", cmd->option);
-	while (cmd->argument[j])
+	if (cmd->argument)
 	{
-		printf("argument is %s\n", cmd->argument[j]);
-		j++;
+		while (cmd->argument[j])
+		{
+			printf("argument is %s\n", cmd->argument[j]);
+			j++;
+		}
 	}
 }
 
@@ -171,16 +187,13 @@ t_cmd	*init_command(char **args)
 			parsing_with_redirection(cmd, args[i]);
 		else
 			normal_parsing(cmd, args[i]);
-		//printf("here Okay 2\n");
 		if (args[i + 1])
 		{
 			cmd->next = init_cmd();
 			cmd = cmd->next;
 		}
-		//printf("here Okay  3\n");
 		i++;
 	}
-	//printf("here Okay ??\n");
 	cmd = begin;
 	return (cmd);
 }

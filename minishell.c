@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 09:57:56 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/07 16:52:00 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/08 00:13:37 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd	*init_cmd(void)
 	new_mem = malloc(sizeof(t_cmd));
 	new_mem->cmd = NULL;
 	new_mem->argument = NULL;
-	new_mem->option = NULL;
+	new_mem->option = ft_strdup("");
 	new_mem->next = NULL;
 	new_mem->redirect = init_redirecttion();
 	return (new_mem);
@@ -74,7 +74,7 @@ int	main(int ac, char **av, char **env)
 	int		i;
 
 	i = 0;
-	//command = init_cmd();
+	command = init_cmd();
 	(void)ac;
 	(void)av;
 	(void)env;
@@ -94,17 +94,18 @@ int	main(int ac, char **av, char **env)
 				printf("command is :%s\n", command->cmd);
 				while (command->argument[i])
 				{
-					printf("argument is : %s\n", command->argument[i]);
+					printf("argument is : %s\n", command->argument[0]);
 					i++;
 				}
 				if (command->option)
 					printf("option is : %s\n", command->option);
-				if (command->redirect)
+				if (command->redirect->file_name)
 				{
 					while (command->redirect)
 					{
 						printf("file_name is : %s\n", command->redirect->file_name);
 						printf("type is %d\n", command->redirect->type);
+						command->redirect = command->redirect->next;
 					}
 				}
 				command = command->next;
