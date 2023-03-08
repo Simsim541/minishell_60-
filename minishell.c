@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 09:57:56 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/08 13:00:23 by simoberri        ###   ########.fr       */
+/*   Updated: 2023/03/08 17:26:46 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_cmd	*init_cmd(void)
 	new_mem = malloc(sizeof(t_cmd));
 	new_mem->cmd = NULL;
 	new_mem->argument = NULL;
-	new_mem->option = ft_strdup("");
 	new_mem->next = NULL;
 	new_mem->redirect = init_redirecttion();
 	return (new_mem);
@@ -51,7 +50,7 @@ static int	white_space(char *str)
 }
 /*
 echo -n "hello"
-    ls -al>>A >>B>> C>>D
+   ls  -al>>A >>B>> C>>D
 ls >> Z>> X -al>> E
 */
 
@@ -73,8 +72,6 @@ int	main(int ac, char **av, char **env)
 	t_cmd	*command;
 	int		i;
 
-	i = 0;
-	command = init_cmd();
 	(void)ac;
 	(void)av;
 	(void)env;
@@ -91,17 +88,16 @@ int	main(int ac, char **av, char **env)
 			printf("OKAY   here before while loop is Okay\n");
 			while (command)
 			{
+				i = 0;
 				printf("command is :%s\n", command->cmd);
 				if (command->argument != NULL)
 				{
 					while (command->argument[i])
 					{	
-						printf("argument is : %s\n", command->argument[0]);
+						printf("argument %d is : %s\n", i + 1, command->argument[i]);
 						i++;
 					}
 				}
-				if (command->option)
-					printf("option is : %s\n", command->option);
 				if (command->redirect->file_name)
 				{
 					while (command->redirect)
@@ -114,6 +110,7 @@ int	main(int ac, char **av, char **env)
 				command = command->next;
 			}
 		}
+	free(command);
 	}
 	return (0);
 }

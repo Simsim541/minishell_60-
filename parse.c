@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:59:49 by mberri            #+#    #+#             */
-/*   Updated: 2023/03/08 13:30:59 by simoberri        ###   ########.fr       */
+/*   Updated: 2023/03/08 20:36:04 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,55 +20,101 @@ static void	quotes_counter(char c, int *db, int *s)
 		(*s)++;
 }
 
+static int	count_argument(char *line)
+{
+	int		i;
+	int		db;
+	int		s;
+	int		count;
+	int		j;
+
+	i = 0;
+	db = 0;
+	j = 0;
+	s = 0;
+	count = 0;
+	while (is_white_space(line[i]))
+		i++;
+	while (!is_white_space(line[i]) && (line[i] != '<' && line[i] != '>')
+		&& (!(db % 2) && !(s % 2)))
+	{
+		quotes_counter(line[i], &db, &s);
+		i++;
+	}
+	while (line[i])
+	{
+		quotes_counter(line[i], &db, &s);
+		while (is_white_space(line[i]))
+		{
+			i++;
+			j = 0;
+		}
+		while (!is_white_space(line[i]) && (line[i] != '<' && line[i] != '>')
+			&& (!(db % 2) && !(s % 2)) && !j)
+		{
+			quotes_counter(line[i], &db, &s);
+			i++;
+		}
+		while (line[i] == '>' || line[i] == '<' && (!(db % 2) && !(s % 2)))
+			j = i++;
+		if (j)
+		{
+			while (!is_white_space(line[i])
+				&& (line[i] != '<' && line[i] != '>')
+				&& (!(db % 2) && !(s % 2)))
+			{
+				quotes_counter(line[i], &db, &s);
+					i++;
+			}
+		}
+		if (!j)
+			count++;
+	}
+	return (count);
+}
+
 void	normal_parsing(t_cmd *cmd, char *line)
 {
 	char	**command;
 	int		i;
 	int		j;
 	int		k;
-	
+
 	i = 0;
 	j = 0;
-	k = 0;
+	k = 1;
 	command = ft_split(line, ' ');
-	while(command[++j])
+	while (command[k])
+		k++;
+	if (k > 1)
 	{
-		if(!is_option(command[j]))
-			k++;
-	}
-	j = 0;
-	if (k > 0)
 		cmd->argument = malloc(sizeof(char *) * k + 1);
+		cmd->argument[k] = NULL;
+	}
 	cmd->cmd = ft_strdup(command[i]);
 	i++;
 	while (command[i])
 	{
 		printf("(insid LOOP) command is  %s\n", cmd->cmd);
-		if (is_option(command[i]))
+		if (k > 1)
 		{
-			cmd->option = ft_strjoin(cmd->option, command[i]);
-			printf("(inside LOOP) option is %s\n", cmd->option);
-		}
-		else
-		{
-			if (k > 0)
-			{
-				cmd->argument[j] = ft_strdup(command[i]);
-				printf("(inside LOOP) argument is : %s\n", cmd->argument[j]);
-				j++;
-			}
-			else
-				cmd->argument = NULL;
+			cmd->argument[j] = ft_strdup(command[i]);
+			printf ("(inside LOOP) argument is : %s\n", cmd->argument[j]);
+			j++;
 		}
 		i++;
 	}
-	free(command);
-	cmd->argument[j] = '\0';
 	j = 0;
+	while (command[j])
+	{
+		free(command[j]);
+		j++;
+	}
+	free(command);
 	printf("command is %s\n", cmd->cmd);
-	printf("option is %s\n", cmd->option);
 	if (cmd->argument != NULL)
 	{
+		j = 0;
 		while (cmd->argument[j])
 		{
 			printf("argument is %s\n", cmd->argument[j]);
@@ -77,34 +123,41 @@ void	normal_parsing(t_cmd *cmd, char *line)
 	}
 }
 
-void	fill_redirection(t_cmd *cmd, char *line, int *i)
+void	fill_redirection(t_redirection *redirect, char *line, int *i)
 {
-	int	start;
+	int	db;
+	int	s;
 
-	start = 0;
+	db = 0;
+	s = 0;
 	//printf("here in fill redirection\n");
 	if (line[*i] == '>' && line[(*i) + 1] == '>')
-		cmd->redirect->type = RED_DOUBLE_OUT;
+		redirect->type = RED_DOUBLE_OUT;
 	else if (line[*i] == '<' && line[(*i) + 1] == '<')
-		cmd->redirect->type = RED_DOUBLE_INP;
+		redirect->type = RED_DOUBLE_INP;
 	else if (line[*i] == '<' && line[(*i) + 1] == '>')
-		cmd->redirect->type = RED_INP;
+		redirect->type = RED_INP;
 	else if (line[*i] == '>' && (line[(*i) + 1] != '>'
 			&& line[(*i) + 1] != '<'))
-		cmd->redirect->type = RED_OUT;
+		redirect->type = RED_OUT;
 	else if (line[*i] == '<' && (line[(*i) + 1] != '>'
 			&& line[(*i) + 1] != '<'))
-		cmd->redirect->type = RED_INP;
+		redirect->type = RED_INP;
 	while (line[*i] == '>' || line[*i] == '<')
 		(*i)++;
 	while (is_white_space(line[*i]))
 		(*i)++;
-	start = *i;
-	while (line[*i] && !(is_white_space(line[*i])))
+	redirect->index = *i;
+	while (line[*i] && !(is_white_space(line[*i]))
+		&& (line[*i] != '>' && line[*i] != '<')
+		&& (!(db % 2) && !(s % 2)))
+	{
+		quotes_counter(line[*i], &db, &s);
 		(*i)++;
-	cmd->redirect->file_name = ft_substr(line, start, (*i) - start);
-	cmd->redirect->next = init_redirecttion();
-	cmd->redirect = cmd->redirect->next;
+	}
+	redirect->file_name = ft_substr(line, redirect->index, (*i) - redirect->index);
+	redirect->next = init_redirecttion();
+	redirect = redirect->next;
 	//printf("everything okay !\n");
 }
 
@@ -135,39 +188,26 @@ void	parsing_with_redirection(t_cmd *cmd, char *line)
 	while (line[i])
 	{
 		quotes_counter(line[i], &db, &s);
-		while (is_white_space(line[i]))
+		while (is_white_space(line[i]) && (!(db % 2) && !(s % 2)))
 			i++;
 		if ((line[i] == '>' || line[i] == '<')
 			&& (!(db % 2) && !(s % 2)))
-			fill_redirection(cmd, line, &i);
+			fill_redirection(cmd->redirect, line, &i);
 		//printf("index of i is:   %d\n", i);
-		if (line[i] && line[i] == '-' && (!(db % 2) && !(s % 2)))
+		if (line[i])
 		{
-			quotes_counter(line[i], &db, &s);
 			start = i;
-			while (((!(db % 2) && !(s % 2)))
-				&& ((line[i] != '>' && line[i] != '<')
-					|| (!is_white_space(line[i]))))
+			while ((line[i] != '>' && line[i] != '<')
+				&& (!is_white_space(line[i])) && (!(db % 2) && !(s % 2)))
+			{
 				i++;
-			cmd->option = ft_substr(line, start, i - start);
+				quotes_counter(line[i], &db, &s);
+			}
+			cmd->argument[j] = ft_substr(line, start, i - start);
 		}
 		//printf("OK HERE ??\n");
 		while (is_white_space(line[i]))
 			i++;
-		if (line[i])
-		{
-			start = i;
-			while ((((!(db % 2) && !(s % 2)))
-					&& ((line[i] != '>' && line[i] != '<')
-						&& (!is_white_space(line[i])))))
-			{
-				quotes_counter(line[i], &db, &s);
-				i++;
-			}
-			cmd->argument[j] = ft_substr(line, start, i - start);
-			j++;
-		}
-		i++;
 	}
 	cmd->redirect = begin_red;
 	//printf("%s\n", begin_red->file_name);

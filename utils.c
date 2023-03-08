@@ -6,7 +6,7 @@
 /*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:31:11 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/07 15:02:03 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/08 16:11:43 by mberri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ int	is_white_space(char c)
 int	print_error(char *str)
 {
 	ft_putstr_fd(str, 2);
-	return (0);
-}
-
-int	is_option(char *line)
-{
-	if (line[0] == '-')
-		return (1);
 	return (0);
 }
 
