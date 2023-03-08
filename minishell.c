@@ -6,7 +6,7 @@
 /*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 09:57:56 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/08 00:13:37 by simoberri        ###   ########.fr       */
+/*   Updated: 2023/03/08 13:00:23 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,13 @@ int	main(int ac, char **av, char **env)
 			while (command)
 			{
 				printf("command is :%s\n", command->cmd);
-				while (command->argument[i])
+				if (command->argument != NULL)
 				{
-					printf("argument is : %s\n", command->argument[0]);
-					i++;
+					while (command->argument[i])
+					{	
+						printf("argument is : %s\n", command->argument[0]);
+						i++;
+					}
 				}
 				if (command->option)
 					printf("option is : %s\n", command->option);

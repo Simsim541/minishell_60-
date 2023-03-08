@@ -6,7 +6,7 @@
 /*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:59:49 by mberri            #+#    #+#             */
-/*   Updated: 2023/03/08 00:46:53 by simoberri        ###   ########.fr       */
+/*   Updated: 2023/03/08 13:30:59 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,25 @@ void	normal_parsing(t_cmd *cmd, char *line)
 			cmd->option = ft_strjoin(cmd->option, command[i]);
 			printf("(inside LOOP) option is %s\n", cmd->option);
 		}
-		else if (k > 0)
+		else
 		{
-			cmd->argument[j] = ft_strdup(command[i]);
-			printf("(inside LOOP) argument is : %s\n", cmd->argument[j]);
-			j++;
+			if (k > 0)
+			{
+				cmd->argument[j] = ft_strdup(command[i]);
+				printf("(inside LOOP) argument is : %s\n", cmd->argument[j]);
+				j++;
+			}
+			else
+				cmd->argument = NULL;
 		}
 		i++;
 	}
-	//cmd->argument[j] = '\0';
+	free(command);
+	cmd->argument[j] = '\0';
 	j = 0;
 	printf("command is %s\n", cmd->cmd);
 	printf("option is %s\n", cmd->option);
-	if (cmd->argument)
+	if (cmd->argument != NULL)
 	{
 		while (cmd->argument[j])
 		{
