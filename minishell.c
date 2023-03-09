@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 09:57:56 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/08 17:26:46 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/09 00:11:20 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	white_space(char *str)
 /*
 echo -n "hello"
    ls  -al>>A >>B>> C>>D
-ls >> Z>> X -al>> E
+ls >> Z>> X -al kjk>> E
 */
 
 int	check_syntax_init(char *line)
@@ -98,7 +98,7 @@ int	main(int ac, char **av, char **env)
 						i++;
 					}
 				}
-				if (command->redirect->file_name)
+				if (command->redirect)
 				{
 					while (command->redirect)
 					{

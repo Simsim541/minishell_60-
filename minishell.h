@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mberri <mberri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simoberri <simoberri@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 14:39:35 by aaammari          #+#    #+#             */
-/*   Updated: 2023/03/08 17:32:46 by mberri           ###   ########.fr       */
+/*   Updated: 2023/03/09 00:24:41 by simoberri        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_cmd
 int				there_is_a_redirection(char *str);
 t_redirection	*init_redirecttion(void);
 t_cmd			*init_cmd(void);
-void			fill_redirection(t_redirection *cmd, char *line, int *i);
+void			fill_redirection(t_cmd *cmd, char *line, int *i);
 void			normal_parsing(t_cmd *cmd, char *line);
 void			parsing_with_redirection(t_cmd *cmd, char *line);
 t_cmd			*init_command(char **args);
